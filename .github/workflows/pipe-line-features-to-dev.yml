@@ -33,13 +33,15 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 6.13
-    - name: Install dependencies
-      run: |
-        if [ -f front-end/tutorial-canciones/package.json ]; then npm --prefix front-end/tutorial-canciones/ install; fi
-    - name: Correr pruebas unitarias
-      id: correr-test
-      run: 
-        npm --prefix front-end/tutorial-canciones/ run test
+  Merge-to-dev:  
+    needs: Pruebas-back
+    needs: Pruebas-front
+    name: Merge feature branch into develop 
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
 
 
     
