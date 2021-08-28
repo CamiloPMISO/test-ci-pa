@@ -36,10 +36,10 @@ jobs:
     - name: Install dependencies
       run: |
         if [ -f front-end/tutorial-canciones/package.json ]; then npm --prefix front-end/tutorial-canciones/ install; fi
-     - name: Correr pruebas unitarias
-      id: correr-test
-      run: 
-        npm --prefix front-end/tutorial-canciones/ run test
+    - name: Correr pruebas unitarias
+    id: correr-test
+    run: 
+      npm --prefix front-end/tutorial-canciones/ run test
 
 
     
