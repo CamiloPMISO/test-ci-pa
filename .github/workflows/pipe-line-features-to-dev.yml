@@ -6,9 +6,9 @@ on:
     - 'feature/*'
 
 jobs:
-  if: " startsWith(github.event.head_commit.message, 'mezclar')"
   Pruebas-back:
     runs-on: ubuntu-latest
+    if: " startsWith(github.event.head_commit.message, 'mezclar')"
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
@@ -26,6 +26,7 @@ jobs:
       run: python -m unittest discover flaskr/tests -v
   Pruebas-front:
     runs-on: ubuntu-latest
+    if: " startsWith(github.event.head_commit.message, 'mezclar')"
     steps:
     - uses: actions/checkout@v2
     - name: Set up Node.js 6.13
