@@ -41,9 +41,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: Extraer nombre de la rama actual
-          shell: bash
-          run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-          id: extract_branch
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: merge
         uses: mtanzi/action-automerge@v1
         id: merge
