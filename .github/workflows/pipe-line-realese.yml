@@ -1,4 +1,4 @@
-name: Automerge de PR de develop a master.
+name: Automerge de PR de develop a master .
 
 on:
   pull_request:
