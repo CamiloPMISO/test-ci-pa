@@ -35,7 +35,7 @@ jobs:
         node-version: 6.13
     - name: Install dependencies
       run: |
-        if [ -f front-end/tutorial-canciones/package.json ]; then npm front-end/tutorial-canciones/install; fi
+        if [ -f front-end/tutorial-canciones/package.json ]; then npm --prefix front-end/tutorial-canciones/ install; fi
 
 
     
