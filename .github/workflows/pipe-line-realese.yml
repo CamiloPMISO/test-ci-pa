@@ -23,14 +23,15 @@ jobs:
         ref: ${{github.event.pull_request.head.ref}}
     - name: Crear rama release
       run: |
-        git checkout -B release-${{github.event.pull_request.head.title}}
-        git push -u origin release-${{github.event.pull_request.head.title}}
+        git checkout -B release-${{github.event.pull_request.title}}
+        git push -u origin release-${{github.event.pull_request.title}}
   Pruebas-back:
     runs-on: ubuntu-latest
+    needs: Crear-release
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: release-${{github.event.pull_request.head.title}}
+        ref: release-${{github.event.pull_request.title}}
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
@@ -48,7 +49,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: release-${{github.event.pull_request.head.title}}
+        ref: release-${{github.event.pull_request.title}}
     - name: Set up Node.js 12.14
       uses: actions/setup-node@v1
       with:
@@ -69,7 +70,7 @@ jobs:
       - uses: everlytic/branch-merge@1.1.2
         with:
           github_token: ${{ github.token }}
-          source_ref: release-${{github.event.pull_request.head.title}}
+          source_ref: release-${{github.event.pull_request.title}}
           target_branch: 'main'
           commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
 
