@@ -9,6 +9,8 @@ jobs:
   Pruebas-back:
     runs-on: ubuntu-latest
     steps:
+      outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
@@ -22,7 +24,6 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Correr pruebas unitarias
       id: correr-test
-      run: 
-        python -m unittest discover tests
+      run: python -m unittest discover tests
   
 
