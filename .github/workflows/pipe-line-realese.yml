@@ -1,0 +1,66 @@
+name: automatiza la verificación de las pruebas cuando una HU esta lista y la mezcla a develop.
+
+on:
+  push:
+    branches: 
+    - 'feature/*'
+
+jobs:
+  Pruebas-back:
+    runs-on: ubuntu-latest
+    if: " startsWith(github.event.head_commit.message, 'mezclar')"
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Checkout to flask folder
+      run: cd flaskr/
+    - name: Install dependencies
+      run: |
+        python -m  pip install --upgrade pip
+        if [ -f flaskr/requirements.txt ]; then pip install -r flaskr/requirements.txt; fi
+    - name: Correr pruebas unitarias
+      id: correr-test
+      run: python -m unittest discover flaskr/tests -v
+  Pruebas-front:
+    runs-on: ubuntu-latest
+    if: " startsWith(github.event.head_commit.message, 'mezclar')"
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js 12.14
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.14
+    - name: Install dependencies
+      run: |
+        if [ -f front-end/tutorial-canciones/package.json ]; then npm --prefix front-end/tutorial-canciones/ install; fi
+    - name: Correr pruebas unitarias
+      id: correr-test
+      run: 
+        npm --prefix front-end/tutorial-canciones/ run test
+  Merge-to-dev:  
+    needs: [Pruebas-back, Pruebas-front]
+    name: Merge feature branch into develop 
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Extraer nombre de la rama actual
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: merge
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ github.token }}
+          source: "${{ steps.extract_branch.outputs.branch }}"
+          target: 'develop'
+
+
+
+    
+  
+
