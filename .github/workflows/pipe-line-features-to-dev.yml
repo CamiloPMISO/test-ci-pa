@@ -3,7 +3,7 @@ name: automatiza la verificación de las pruebas cuando una HU esta lista y la m
 on:
   push:
     branches: 
-    - '*'
+    - 'feature/*'
 
 jobs:
   Pruebas-back:
