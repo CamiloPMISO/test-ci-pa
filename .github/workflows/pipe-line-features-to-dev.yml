@@ -34,8 +34,7 @@ jobs:
       with:
         node-version: 6.13
   Merge-to-dev:  
-    needs: Pruebas-back
-    needs: Pruebas-front
+    needs: [Pruebas-back, Pruebas-front]
     name: Merge feature branch into develop 
     runs-on: ubuntu-latest
     steps:
