@@ -11,7 +11,7 @@ on:
       - ready_for_review
       - reopened
       - unlocked
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   Crear-release:
