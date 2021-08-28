@@ -1,0 +1,29 @@
+name: automatiza la verificación de las pruebas cuando una HU esta lista y la mezcla a develop.
+
+on:
+  push:
+    branches: 
+    - '*'
+
+jobs:
+  Pruebas-back:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Checkout to flask folder
+    run: |
+        cd flaskr/
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Correr pruebas unitarias
+      id: correr-test
+      run: 
+        python -m unittest discover tests
+  
+
