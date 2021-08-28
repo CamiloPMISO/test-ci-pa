@@ -3,7 +3,7 @@ name: automatiza la verificación de las pruebas cuando una HU esta lista y la m
 on:
   push:
     branches: 
-    - '*'
+    - 'feature/*'
 
 jobs:
   Pruebas-back:
@@ -24,6 +24,35 @@ jobs:
     - name: Correr pruebas unitarias
       id: correr-test
       run: python -m unittest discover flaskr/tests -v
+  Pruebas-front:
+    runs-on: ubuntu-latest
+    if: " startsWith(github.event.head_commit.message, 'mezclar')"
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js 6.13
+      uses: actions/setup-node@v1
+      with:
+        node-version: 6.13
+  Merge-to-dev:  
+    needs: [Pruebas-back, Pruebas-front]
+    name: Merge feature branch into develop 
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Extraer nombre de la rama actual
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: merge
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ github.token }}
+          source: "${{ steps.extract_branch.outputs.branch }}"
+          target: 'develop'
+
+
 
     
   
