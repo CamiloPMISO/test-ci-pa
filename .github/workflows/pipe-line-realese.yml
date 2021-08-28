@@ -62,7 +62,9 @@ jobs:
       run: ls
 
   Merge-to-main:  
+    name : automerge
     needs: [Pruebas-back, Pruebas-front]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: everlytic/branch-merge@1.1.2
