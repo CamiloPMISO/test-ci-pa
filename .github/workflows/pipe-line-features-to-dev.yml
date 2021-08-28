@@ -8,6 +8,8 @@ on:
 jobs:
   Pruebas-back:
     runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
@@ -22,6 +24,17 @@ jobs:
         if [ -f flaskr/requirements.txt ]; then pip install -r flaskr/requirements.txt; fi
     - name: Correr pruebas unitarias
       id: correr-test
-      run: python -m unittest discover flaskr/tests
+      run: python -m unittest discover flaskr/tests -v
+    - name: Validar resultados errados
+      if: ${{ failure() }}
+      env:
+        MSG_ERROR: Las pruebas del back fallaron, por favor revisar.
+      run: echo "::set-output name=respuesta::${MSG_ERROR}"
+    - name: Validar resultados exitosos
+      if: ${{ success() }}
+      env:
+        MSG_SUCCESS: Las pruebas fueron exitosas.
+      run: echo "::set-output name=respuesta::${MSG_SUCCESS}"
+    
   
 
